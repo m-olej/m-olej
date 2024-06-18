@@ -1,5 +1,5 @@
-<h1 align="center">Michał Olejniczak</h1>
-<h3 align="center">I'm a humble Math and Physics enjoyer <br/> I'm interested in: Web Development, Physics simulations and Machine Learning</h3>
+<h1 align="center">Hello There 🙋‍♂️</h1>
+<h3 align="center">I'm Michał, a humble Math and Physics enjoyer <br/> I'm interested in: Web Development, Physics simulations and Machine Learning</h3>
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
