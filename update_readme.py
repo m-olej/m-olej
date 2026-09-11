@@ -3,50 +3,77 @@ import urllib.request
 import urllib.parse
 import json
 import base64
+import html
 from collections import Counter
 from datetime import datetime
 
 def url_to_base64(image_url):
-    """Downloads an image and converts it to a base64 data URI."""
     req = urllib.request.Request(image_url, headers={'User-Agent': 'Mozilla/5.0'})
     with urllib.request.urlopen(req) as response:
         img_data = response.read()
     b64_str = base64.b64encode(img_data).decode('utf-8')
     return f"data:image/jpeg;base64,{b64_str}"
 
-def generate_spotify_svg(track_name, artist_name, cover_url):
+def generate_spotify_svg(top_artist_name, tracks, cover_url):
     cover_b64 = url_to_base64(cover_url)
     
-    # SVG architecture utilizing internal CSS for Dark/Light mode support
+    # Generate the track list text elements
+    track_list_svg = ""
+    y_offset = 110
+    
+    for i, track in enumerate(tracks[:5]):
+        track_name = track['name']
+        artist_name = track['artists'][0]['name']
+        
+        # Format and truncate long text to prevent overflow
+        full_text = f"{i+1}. {track_name} - {artist_name}"
+        if len(full_text) > 42:
+            full_text = full_text[:39] + "..."
+            
+        # Escape XML characters like '&'
+        safe_text = html.escape(full_text)
+        
+        track_list_svg += f'<text x="210" y="{y_offset}" class="text">{safe_text}</text>\n'
+        y_offset += 25
+
+    safe_artist_name = html.escape(top_artist_name)
+
     svg_template = f"""
-    <svg width="400" height="120" xmlns="http://www.w3.org/2000/svg">
+    <svg width="500" height="260" xmlns="http://www.w3.org/2000/svg">
       <style>
         .bg {{ fill: #ffffff; stroke: #e1e4e8; stroke-width: 1px; rx: 10px; }}
-        .title {{ font: 600 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: #24292e; }}
-        .text {{ font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: #586069; }}
+        .title {{ font: 600 16px 'Segoe UI', Ubuntu, Sans-Serif; fill: #24292e; }}
+        .subtitle {{ font: 600 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: #24292e; }}
+        .text {{ font: 400 13px 'Segoe UI', Ubuntu, Sans-Serif; fill: #586069; }}
+        .divider {{ stroke: #e1e4e8; stroke-width: 1px; }}
         
-        /* Automatically switch colors if the user views GitHub in Dark Mode */
+        /* Dark Mode Support */
         @media (prefers-color-scheme: dark) {{
           .bg {{ fill: #0d1117; stroke: #30363d; }}
-          .title {{ fill: #c9d1d9; }}
+          .title, .subtitle {{ fill: #c9d1d9; }}
           .text {{ fill: #8b949e; }}
+          .divider {{ stroke: #30363d; }}
         }}
       </style>
       
       <!-- Background Card -->
       <rect x="0" y="0" width="100%" height="100%" class="bg" />
       
-      <!-- Base64 Embedded Album Cover -->
-      <image href="{cover_b64}" x="15" y="15" height="90" width="90" preserveAspectRatio="xMidYMid slice" clip-path="url(#corners)" />
+      <!-- Top Centered Artist -->
+      <text x="50%" y="35" text-anchor="middle" class="title">Top Artist: {safe_artist_name}</text>
       
+      <!-- Separator Line -->
+      <line x1="20" y1="50" x2="480" y2="50" class="divider" />
+      
+      <!-- Left Cover Image (Using Track No. 1) -->
+      <image href="{cover_b64}" x="30" y="70" height="150" width="150" preserveAspectRatio="xMidYMid slice" clip-path="url(#corners)" />
       <clipPath id="corners">
-        <rect x="15" y="15" width="90" height="90" rx="8" />
+        <rect x="30" y="70" width="150" height="150" rx="8" />
       </clipPath>
 
-      <!-- Text Elements -->
-      <text x="120" y="40" class="title">Currently on Heavy Rotation</text>
-      <text x="120" y="65" class="text">Track: {track_name}</text>
-      <text x="120" y="85" class="text">Artist: {artist_name}</text>
+      <!-- Right Track List -->
+      <text x="210" y="85" class="subtitle">Top Tracks</text>
+      {track_list_svg}
     </svg>
     """
     return svg_template
@@ -95,7 +122,7 @@ def get_github_stats(token, username):
     total_bytes = sum(language_bytes.values())
     print(f"Total Bytes Tracked: {total_bytes}")
     
-    lang_markdown = "### 💻 Top Languages\n\n```text\n"
+    lang_markdown = "```text\n"
     for lang, size in language_bytes.most_common(5):
         percent = (size / total_bytes) * 100
         blocks = int((percent / 100) * 20)
@@ -125,7 +152,7 @@ def get_spotify_stats(client_id, client_secret, refresh_token):
         return "Spotify Authentication Error"
 
     # Fetch Top Track
-    track_url = "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=1"
+    track_url = "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=5"
     track_req = urllib.request.Request(track_url)
     track_req.add_header("Authorization", f"Bearer {access_token}")
     
@@ -143,18 +170,12 @@ def get_spotify_stats(client_id, client_secret, refresh_token):
     if not top_track_data or not top_artist_data:
         return "Not enough Spotify data for this period."
 
-    # Extract variables
-    top_track = top_track_data[0]
-    top_artist = top_artist_data[0]
-    cover_url = top_track['album']['images'][0]['url']
+    cover_url = top_track_data[0]['album']['images'][0]['url']
     
-    # Safely fetch the genres list, defaulting to an empty list if the key is missing
-    artist_genres = top_artist.get('genres', [])
-
     # 1. Generate the SVG string
     spotify_svg_content = generate_spotify_svg(
-        track_name=top_track['name'], 
-        artist_name=top_artist['name'], 
+        tracks=top_track_data,
+        top_artist_name=top_artist_data[0]['name'], 
         cover_url=top_track['album']['images'][0]['url']
     )
     
