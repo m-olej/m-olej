@@ -31,5 +31,5 @@ jobs:
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: compile dynamic README metrics"
-          file_pattern: README.md
+          commit_message: "chore: compile dynamic README metrics and SVGs"
+          file_pattern: README.md *.svg

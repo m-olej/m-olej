@@ -10,12 +10,9 @@ I am a computer science student and software developer focusing on backend archi
 **Architecture & Containerization:**
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
 
----
+<img src="./spotify_stats.svg" align="right" width="400" alt="Spotify Stats">
+
+### 💻 Top Languages
 
 {{ GITHUB_LANGS }}
 
----
-
-{{ SPOTIFY_STATS }}
-
----
