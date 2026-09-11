@@ -132,7 +132,6 @@ if __name__ == "__main__":
 
     new_readme = template.replace("{{ GITHUB_LANGS }}", lang_md)
     new_readme = new_readme.replace("{{ SPOTIFY_STATS }}", spotify_md)
-    new_readme = new_readme.replace("{{ RSS_FEED }}", rss_md)
 
     with open("README.md", "w", encoding="utf-8") as file:
         file.write(new_readme)
