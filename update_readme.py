@@ -170,13 +170,11 @@ def get_spotify_stats(client_id, client_secret, refresh_token):
     if not top_track_data or not top_artist_data:
         return "Not enough Spotify data for this period."
 
-    cover_url = top_track_data[0]['album']['images'][0]['url']
-    
     # 1. Generate the SVG string
     spotify_svg_content = generate_spotify_svg(
         tracks=top_track_data,
         top_artist_name=top_artist_data[0]['name'], 
-        cover_url=top_track['album']['images'][0]['url']
+        cover_url=top_track_data[0]['album']['images'][0]['url']
     )
     
     # 2. Write it to a file
