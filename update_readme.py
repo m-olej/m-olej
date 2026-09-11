@@ -98,12 +98,18 @@ def get_spotify_stats(client_id, client_secret, refresh_token):
     if not top_track_data or not top_artist_data:
         return "Not enough Spotify data for this period."
 
+    # Extract variables
     top_track = top_track_data[0]
     top_artist = top_artist_data[0]
     cover_url = top_track['album']['images'][0]['url']
+    
+    # Safely fetch the genres list, defaulting to an empty list if the key is missing
+    artist_genres = top_artist.get('genres', [])
+    top_genre = artist_genres[0].title() if artist_genres else 'Unknown'
 
     print(f"Top Track: {top_track['name']}")
     print(f"Top Artist: {top_artist['name']}")
+    print(f"Top Genre: {top_genre}")
 
     spotify_markdown = f"""### 🎧 Current Heavy Rotation
 <div style="display: flex; align-items: center;">
@@ -111,7 +117,7 @@ def get_spotify_stats(client_id, client_secret, refresh_token):
     <div>
         <strong>Top Track:</strong> {top_track['name']} by {top_track['artists'][0]['name']}<br/>
         <strong>Top Artist:</strong> {top_artist['name']}<br/>
-        <strong>Top Genre:</strong> {top_artist['genres'][0].title() if top_artist['genres'] else 'Unknown'}
+        <strong>Top Genre:</strong> {top_genre}
     </div>
 </div>
 """
