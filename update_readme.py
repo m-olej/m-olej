@@ -172,14 +172,13 @@ if __name__ == "__main__":
     github_user = "m-olej" 
     
     lang_md = get_github_stats(github_token, github_user)
-    spotify_md = get_spotify_stats(spotify_client_id, spotify_client_secret, spotify_refresh_token)
+    get_spotify_stats(spotify_client_id, spotify_client_secret, spotify_refresh_token)
     
     print("\n--- COMPILING README ---")
     with open("README.template.md", "r", encoding="utf-8") as file:
         template = file.read()
 
     new_readme = template.replace("{{ GITHUB_LANGS }}", lang_md)
-    new_readme = new_readme.replace("{{ SPOTIFY_STATS }}", spotify_md)
 
     with open("README.md", "w", encoding="utf-8") as file:
         file.write(new_readme)
