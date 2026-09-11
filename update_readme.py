@@ -8,7 +8,7 @@ from datetime import datetime
 
 def get_github_stats(token, username):
     print("\n--- FETCHING GITHUB STATS ---")
-    url = "[https://api.github.com/graphql](https://api.github.com/graphql)"
+    url = "https://api.github.com/graphql"
     headers = {"Authorization": f"Bearer {token}"}
     
     query = """
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     spotify_client_secret = os.environ['SPOTIFY_CLIENT_SECRET']
     spotify_refresh_token = os.environ['SPOTIFY_REFRESH_TOKEN']
     
-    github_user = "YOUR_GITHUB_USERNAME" 
+    github_user = "m-olej" 
     
     lang_md = get_github_stats(github_token, github_user)
     spotify_md = get_spotify_stats(spotify_client_id, spotify_client_secret, spotify_refresh_token)
