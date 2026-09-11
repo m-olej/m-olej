@@ -12,17 +12,10 @@ I am a computer science student and software developer focusing on backend archi
 
 ---
 
-## 📊 Live Metrics
+{{ GITHUB_LANGS }}
 
-<table width="100%">
-  <tr>
-    <td width="50%" valign="top">
-      {{ GITHUB_LANGS }}
-    </td>
-    <td width="50%" valign="top">
-      {{ SPOTIFY_STATS }}
-    </td>
-  </tr>
-</table>
+---
+
+{{ SPOTIFY_STATS }}
 
 ---
