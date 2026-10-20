@@ -20,7 +20,7 @@
       <rect x="0" y="0" width="100%" height="100%" class="bg" />
       
       <!-- Top Centered Artist -->
-      <text x="50%" y="35" text-anchor="middle" class="title">Top Artist: Have A Nice Life</text>
+      <text x="50%" y="35" text-anchor="middle" class="title">Top Artist: Token</text>
       
       <!-- Separator Line -->
       <line x1="20" y1="50" x2="480" y2="50" class="divider" />
@@ -34,10 +34,10 @@
       <!-- Right Track List -->
       <text x="210" y="85" class="subtitle">Top Tracks</text>
       <text x="210" y="110" class="text">1. MEAT THE HUMANS - To The Grave</text>
-<text x="210" y="135" class="text">2. Old Doll - Bluerra-sai</text>
-<text x="210" y="160" class="text">3. A Quick One Before the Eternal Worm ...</text>
-<text x="210" y="185" class="text">4. Hunter - Have A Nice Life</text>
-<text x="210" y="210" class="text">5. Waiting for Black Metal Records to C...</text>
+<text x="210" y="135" class="text">2. Diary #2 - Lucky - Token</text>
+<text x="210" y="160" class="text">3. Old Doll - Bluerra-sai</text>
+<text x="210" y="185" class="text">4. A Quick One Before the Eternal Worm ...</text>
+<text x="210" y="210" class="text">5. Bambi - Token</text>
 
     </svg>
     
